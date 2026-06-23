@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "generator_version": "1.0.0",
+    "schema_version": "1",
+    "total_devices": 2,
+    "shards": null
+  },
+  "devices": [
+    {
+      "manufacturer": "Meyer Sound",
+      "model": "GALAXY 816",
+      "category": "audio",
+      "drivers": [
+        {
+          "id": "meyersound",
+          "confidence": "untested",
+          "notes": "Uses the GALAXY ASCII/TCP control plane documented by Meyer Sound."
+        }
+      ]
+    },
+    {
+      "manufacturer": "Meyer Sound",
+      "model": "GALAXY 816AES",
+      "category": "audio",
+      "drivers": [
+        {
+          "id": "meyersound",
+          "confidence": "untested",
+          "notes": "Uses the GALAXY ASCII/TCP control plane documented by Meyer Sound."
+        }
+      ]
+    }
+  ]
+}

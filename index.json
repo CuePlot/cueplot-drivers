@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "generator_version": "1.0.0",
+    "schema_version": "1",
+    "total_drivers": 1,
+    "shards": null
+  },
+  "drivers": [
+    {
+      "id": "meyersound",
+      "name": "Meyer Sound Galaxy 816",
+      "manufacturer": "Meyer Sound",
+      "category": "audio",
+      "version": "1.1.0",
+      "author": "CuePlot",
+      "transport": "tcp",
+      "description": "Controls Meyer Sound Galileo GALAXY 816 processors over the ASCII control port. Includes snapshot recall, input/output mute and gain, and matrix gain.",
+      "source_url": "https://docs.meyersound.com/products/en/programming-guide---galileo-galaxy.html",
+      "file": "audio/meyersound.avcdriver",
+      "format": "avcdriver",
+      "ports": [
+        25003
+      ],
+      "protocols": [
+        "tcp",
+        "ascii"
+      ],
+      "simulated": false,
+      "verified": false,
+      "min_platform_version": "0.6.0",
+      "tags": [
+        "dsp",
+        "processor",
+        "galaxy",
+        "meyer",
+        "tcp",
+        "ascii"
+      ],
+      "help": {
+        "overview": "Controls Meyer Sound Galileo GALAXY processors through the documented ASCII control port on TCP 25003. This driver focuses on the operational commands most commonly needed in show control: snapshot recall, input/output mute and gain, and matrix crosspoint gain.",
+        "setup": "1. Connect the GALAXY to the same network as the CuePlot server.\n2. In Compass or from the front panel, note the device IP address or mDNS hostname.\n3. Add the device in CuePlot and enter the host. Default ASCII port is 25003.\n4. If you want live state feedback, set the Primary Input / Output / Matrix channels below to the channels you want CuePlot to track.\n5. Test with Query Entity Name or Query Active Snapshot before building automation."
+      },
+      "compatible_models": [
+        {
+          "manufacturer": "Meyer Sound",
+          "models": [
+            "GALAXY 816",
+            "GALAXY 816AES"
+          ],
+          "confidence": "untested",
+          "notes": "Uses the GALAXY ASCII/TCP control plane documented by Meyer Sound."
+        }
+      ],
+      "discovery": {
+        "hostname": [
+          "(?i)^mslg-gx-(408|816|816aes|bluehorn)-.*$",
+          "(?i)^galaxy-.*$"
+        ],
+        "port_open": [
+          25003
+        ],
+        "manufacturer_alias": [
+          "meyer sound",
+          "meyer"
+        ]
+      }
+    }
+  ]
+}
