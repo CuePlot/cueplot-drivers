@@ -2,7 +2,7 @@
   "_meta": {
     "generator_version": "1.0.0",
     "schema_version": "1",
-    "total_devices": 6,
+    "total_devices": 7,
     "shards": null
   },
   "devices": [
@@ -56,7 +56,7 @@
     },
     {
       "manufacturer": "Digital Projection",
-      "model": "E-Vision Series (compatibility pending)",
+      "model": "E-Vision Laser Series (compatibility pending)",
       "category": "projector",
       "drivers": [
         {
@@ -68,13 +68,25 @@
     },
     {
       "manufacturer": "Digital Projection",
-      "model": "E-Vision Laser Series (compatibility pending)",
+      "model": "E-Vision Series (compatibility pending)",
       "category": "projector",
       "drivers": [
         {
           "id": "digital_projection_evision",
           "confidence": "untested",
           "notes": "Nearby E-Vision models may be compatible, but only the 7500/8500 protocol is currently documented in this driver."
+        }
+      ]
+    },
+    {
+      "manufacturer": "AV Stumpfl",
+      "model": "PIXERA",
+      "category": "video",
+      "drivers": [
+        {
+          "id": "pixera_timeline",
+          "confidence": "documented",
+          "notes": "Uses the official PIXERA JSON-RPC API in JSON/TCP (dl) mode."
         }
       ]
     }
