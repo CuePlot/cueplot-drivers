@@ -2,7 +2,7 @@
   "_meta": {
     "generator_version": "1.0.0",
     "schema_version": "1",
-    "total_devices": 2,
+    "total_devices": 6,
     "shards": null
   },
   "devices": [
@@ -27,6 +27,54 @@
           "id": "meyersound",
           "confidence": "untested",
           "notes": "Uses the GALAXY ASCII/TCP control plane documented by Meyer Sound."
+        }
+      ]
+    },
+    {
+      "manufacturer": "Digital Projection",
+      "model": "E-Vision Laser 7500",
+      "category": "projector",
+      "drivers": [
+        {
+          "id": "digital_projection_evision",
+          "confidence": "documented",
+          "notes": "Native protocol from Digital Projection Protocol Guides Rev F (115-482F)."
+        }
+      ]
+    },
+    {
+      "manufacturer": "Digital Projection",
+      "model": "E-Vision Laser 8500",
+      "category": "projector",
+      "drivers": [
+        {
+          "id": "digital_projection_evision",
+          "confidence": "documented",
+          "notes": "Native protocol from Digital Projection Protocol Guides Rev F (115-482F)."
+        }
+      ]
+    },
+    {
+      "manufacturer": "Digital Projection",
+      "model": "E-Vision Series (compatibility pending)",
+      "category": "projector",
+      "drivers": [
+        {
+          "id": "digital_projection_evision",
+          "confidence": "untested",
+          "notes": "Nearby E-Vision models may be compatible, but only the 7500/8500 protocol is currently documented in this driver."
+        }
+      ]
+    },
+    {
+      "manufacturer": "Digital Projection",
+      "model": "E-Vision Laser Series (compatibility pending)",
+      "category": "projector",
+      "drivers": [
+        {
+          "id": "digital_projection_evision",
+          "confidence": "untested",
+          "notes": "Nearby E-Vision models may be compatible, but only the 7500/8500 protocol is currently documented in this driver."
         }
       ]
     }

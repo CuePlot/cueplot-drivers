@@ -2,7 +2,7 @@
   "_meta": {
     "generator_version": "1.0.0",
     "schema_version": "1",
-    "total_drivers": 1,
+    "total_drivers": 2,
     "shards": null
   },
   "drivers": [
@@ -62,6 +62,66 @@
         "manufacturer_alias": [
           "meyer sound",
           "meyer"
+        ]
+      }
+    },
+    {
+      "id": "digital_projection_evision",
+      "name": "Digital Projection E-Vision Native",
+      "manufacturer": "Digital Projection",
+      "category": "projector",
+      "version": "2.0.0",
+      "author": "CuePlot",
+      "transport": "tcp",
+      "description": "Native ASCII protocol driver for Digital Projection E-Vision Laser 7500/8500. Covers power, shutter, inputs, test patterns, lens, image, color, geometry, edge blend, 3D, laser, setup, network, PIP, information, and diagnostics.",
+      "source_url": "https://www.digitalprojection.com/",
+      "file": "projector/digital_projection_evision.py",
+      "format": "python",
+      "ports": [
+        7000
+      ],
+      "protocols": [
+        "tcp",
+        "ascii"
+      ],
+      "simulated": false,
+      "verified": false,
+      "min_platform_version": "0.6.0",
+      "tags": [
+        "projector",
+        "digital projection",
+        "e-vision",
+        "native",
+        "tcp",
+        "rs232"
+      ],
+      "help": {
+        "overview": "Native Digital Projection driver using the documented ASCII command protocol. Exposes power, shutter, inputs, test patterns, lens, image, color, geometry, edge blend, 3D, laser, scheduling, network, PIP, information, and diagnostics.",
+        "setup": "1. Put the projector on the same network as CuePlot.\n2. Confirm the projector TCP control port is 7000.\n3. Add the device with its IP address and port 7000.\n4. Use Refresh / Query All Status to verify communications.\n5. Build macros only after power, shutter, input, and lens commands respond correctly."
+      },
+      "compatible_models": [
+        {
+          "manufacturer": "Digital Projection",
+          "models": [
+            "E-Vision Laser 7500",
+            "E-Vision Laser 8500"
+          ],
+          "confidence": "documented",
+          "notes": "Implements the native protocol documented in Digital Projection Protocol Guides Rev F (115-482F, October 2016)."
+        }
+      ],
+      "discovery": {
+        "port_open": [
+          7000
+        ],
+        "manufacturer_alias": [
+          "digital projection",
+          "digital projection international"
+        ],
+        "hostname": [
+          "(?i)^e-?vision.*$",
+          "(?i)^digital-?projection.*$",
+          "(?i)^dp-.*$"
         ]
       }
     }
