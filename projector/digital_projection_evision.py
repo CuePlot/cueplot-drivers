@@ -25,7 +25,6 @@ import asyncio
 from typing import Any
 
 from server.drivers.base import BaseDriver
-from server.transport.tcp import TCPTransport
 from server.utils.logger import get_logger
 
 log = get_logger(__name__)
@@ -308,19 +307,19 @@ def _build_commands() -> dict[str, Any]:
         commands[name] = {
             "label": name.replace("_", " ").title(),
             "params": spec["params"],
-            "help": spec.get("help", f"Set {spec['protocol']}"),
+            "help": spec.get("help", f"Set {spec['protocol']}."),
         }
     for name, spec in EXECUTE_COMMANDS.items():
         commands[name] = {
             "label": name.replace("_", " ").title(),
             "params": {},
-            "help": f"Execute {spec['protocol']}",
+            "help": f"Execute {spec['protocol']}.",
         }
     for protocol in QUERY_PROTOCOLS:
         commands[f"query_{_sanitize_key(protocol)}"] = {
             "label": f"Query {protocol}",
             "params": {},
-            "help": f"Query current value of {protocol}",
+            "help": f"Query current value of {protocol}.",
         }
     commands["query_all_status"] = {
         "label": "Query All Status",
@@ -349,6 +348,7 @@ class DigitalProjectionEVisionDriver(BaseDriver):
         "protocols": ["tcp", "ascii"],
         "ports": [7000],
         "transport": "tcp",
+        "delimiter": "\r",
         "discovery": {
             "port_open": [7000],
             "manufacturer_alias": ["digital projection", "digital projection international"],
@@ -421,35 +421,11 @@ class DigitalProjectionEVisionDriver(BaseDriver):
     SHUTTER_MAP = {"0": "open", "1": "close"}
 
     async def connect(self) -> None:
-        host = self.config.get("host", "")
-        port = self.config.get("port", 7000)
-
-        self.transport = await TCPTransport.create(
-            host=host,
-            port=port,
-            on_data=self.on_data_received,
-            on_disconnect=self._handle_disconnect,
-            delimiter=b"\r",
-            name=self.device_id,
-        )
-        self._connected = True
-        self.set_state("connected", True)
-        await self.events.emit(f"device.connected.{self.device_id}")
-        log.info("[%s] Connected to Digital Projection projector at %s:%s", self.device_id, host, port)
-
-        poll_interval = self.config.get("poll_interval", 15)
+        await super().connect()
         await self.poll()
-        if poll_interval > 0:
-            await self.start_polling(poll_interval)
 
     async def disconnect(self) -> None:
-        await self.stop_polling()
-        if self.transport:
-            await self.transport.close()
-            self.transport = None
-        self._connected = False
-        self.set_state("connected", False)
-        await self.events.emit(f"device.disconnected.{self.device_id}")
+        await super().disconnect()
 
     async def _send_line(self, line: str) -> None:
         if not self.transport or not self.transport.connected:
@@ -478,6 +454,7 @@ class DigitalProjectionEVisionDriver(BaseDriver):
 
         if command.startswith("query_"):
             protocol = command[len("query_"):].replace("_", ".")
+            # special cases where underscores are part of flattened names
             protocol = protocol.replace("4corner.", "4corner.")
             protocol = protocol.replace("3d.", "3d.")
             protocol = protocol.replace("eb.", "eb.")
@@ -485,6 +462,7 @@ class DigitalProjectionEVisionDriver(BaseDriver):
             if protocol in QUERY_PROTOCOLS:
                 await self._send_line(f"*{protocol} ?")
                 return
+            # recover exact protocol names from known query set
             for candidate in QUERY_PROTOCOLS:
                 if _sanitize_key(candidate) == command[len("query_"):]:
                     await self._send_line(f"*{candidate} ?")
@@ -505,15 +483,21 @@ class DigitalProjectionEVisionDriver(BaseDriver):
             log.warning("[%s] NAK: %s", self.device_id, text)
             return
 
-        if not (lowered.startswith("ack") or lowered.startswith("nack") or lowered.startswith("nak")):
+        payload = text
+        if lowered.startswith("ack"):
+            payload = text[3:].strip()
+        elif lowered.startswith("nack"):
+            payload = text[4:].strip()
+        elif lowered.startswith("*"):
+            payload = text[1:].strip()
+        elif not any(ch in text for ch in ("=",)):
             log.debug("[%s] Unrecognized response: %s", self.device_id, text)
             return
 
-        payload = text[3:].strip() if lowered.startswith("ack") else text[4:].strip()
-        if " = " not in payload:
+        if "=" not in payload:
             return
 
-        cmd, value = payload.split(" = ", 1)
+        cmd, value = payload.split("=", 1)
         cmd = cmd.strip()
         value = value.strip()
         key = _sanitize_key(cmd)
@@ -547,12 +531,3 @@ class DigitalProjectionEVisionDriver(BaseDriver):
         for protocol in common_queries:
             await self._send_line(f"*{protocol} ?")
             await asyncio.sleep(0.08)
-
-    async def _handle_disconnect(self) -> None:
-        self._connected = False
-        self.set_state("connected", False)
-        try:
-            await self.events.emit(f"device.disconnected.{self.device_id}")
-        except Exception:
-            pass
-        log.warning("[%s] Transport disconnected", self.device_id)
