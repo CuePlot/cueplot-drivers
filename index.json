@@ -2,7 +2,7 @@
   "_meta": {
     "generator_version": "1.0.0",
     "schema_version": "1",
-    "total_drivers": 2,
+    "total_drivers": 3,
     "shards": null
   },
   "drivers": [
@@ -122,6 +122,64 @@
           "(?i)^e-?vision.*$",
           "(?i)^digital-?projection.*$",
           "(?i)^dp-.*$"
+        ]
+      }
+    },
+    {
+      "id": "pixera_timeline",
+      "name": "PIXERA Timeline Controller",
+      "manufacturer": "AV Stumpfl",
+      "category": "video",
+      "version": "0.9.0",
+      "author": "CuePlot",
+      "transport": "tcp",
+      "description": "JSON-RPC timeline control driver for AV Stumpfl PIXERA media servers. Covers transport, cue recall, timeline time, speed factor, and opacity over JSON/TCP (dl).",
+      "source_url": "https://help.pixera.one/api-commands",
+      "file": "video/pixera_timeline.py",
+      "format": "python",
+      "ports": [
+        1400
+      ],
+      "protocols": [
+        "tcp",
+        "json-rpc"
+      ],
+      "simulated": false,
+      "verified": false,
+      "min_platform_version": "0.6.0",
+      "tags": [
+        "pixera",
+        "av stumpfl",
+        "media server",
+        "timeline",
+        "video",
+        "json-rpc"
+      ],
+      "help": {
+        "overview": "Controls a PIXERA timeline through the official JSON-RPC API in JSON/TCP (dl) mode. This version targets show operation: play, pause, stop, cue recall, transport mode, current time, speed, opacity, and cue inspection.",
+        "setup": "1. Put the PIXERA server on the same network as CuePlot.\n2. Enable the PIXERA API port.\n3. Set the API mode to JSON/TCP (dl).\n4. Use port 1400 unless your PIXERA system is configured differently.\n5. Set a preferred timeline name in the driver config if the project has multiple timelines."
+      },
+      "compatible_models": [
+        {
+          "manufacturer": "AV Stumpfl",
+          "models": [
+            "PIXERA"
+          ],
+          "confidence": "documented",
+          "notes": "Implements the PIXERA JSON-RPC API documented at help.pixera.one/api-commands."
+        }
+      ],
+      "discovery": {
+        "port_open": [
+          1400
+        ],
+        "manufacturer_alias": [
+          "av stumpfl",
+          "pixera"
+        ],
+        "hostname": [
+          "(?i)^pixera.*$",
+          "(?i)^avstumpfl.*$"
         ]
       }
     }
